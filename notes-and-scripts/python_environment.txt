@@ -1,0 +1,13 @@
+In order to run the deepct scripts we need to be running python with tensorflow-gpu 1.15
+
+To do this, without blowing up the rest of the host, use a virtual ptyhon environment
+The venv is configured like this:
+
+apt-get install python3-venv
+cd /home/ubuntu/w210
+python3 -m venv venv_deepct/
+source venv_deepct/bin/activate
+
+While the venv is active, the prompt will be prepended with the venv.  If you make any changes to the packages please be mindful if you are in, or out, of the venv.  If you want to test something out, create a new venv and destroy it when you are done by exiting and deleting the venv folder.
+
+
