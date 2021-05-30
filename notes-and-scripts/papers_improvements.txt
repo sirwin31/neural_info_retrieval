@@ -1,0 +1,14 @@
+
+Attentive mimicking
+-> https://www.aclweb.org/anthology/2020.acl-main.368.pdf
+>> To overcome these limitations, we introduce BERTRAM, a model that combines a pretrained
+>> BERT language model (Devlin et al., 2019) with Attentive Mimicking (Schick and Schutze ¨ , 2019a).
+
+
+A more robust BERT (RoBERT)
+-> https://arxiv.org/pdf/1907.11692
+>> BERT is undertrained, and by improving the underlying model the DeepCT model can
+>> perforom better
+
+Passage weight
+-> 
