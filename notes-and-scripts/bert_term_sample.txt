@@ -1,0 +1,19 @@
+
+# the script requires these aguments to run
+usage: passage2doc_bert_term_sample_to_json.py [-h] [--output_format {tsv,json}] [--tf_agg_method {avg,sum,position_decay_avg,position_decay_sum,max}]
+                                               [--max_number_passages MAX_NUMBER_PASSAGES]
+                                               dataset_file prediction_file output_file m
+
+# dataset must contain
+pid, url, title = orj_json['id'], orj_json.get('url', ''), orj_json.get('title', '')
+
+# create a new json doc that contains all the docs
+/home/ubuntu/efs/data/HDCT/msmarco-docs-title-jsonl/docs_all.json
+
+# run the passage2doc
+python3 passage2doc_bert_term_sample_to_json.py  /home/ubuntu/efs/data/HDCT/msmarco-docs-title-jsonl/docs_all.json ../predictions/marco/collection_pred_1/test_results.tsv test_output 2
+
+# output while running looks like this:
+processe 455000 docs, avg len: 7.941178021978022, avg unique terms: 7.904325274725275
+processe 456000 docs, avg len: 7.941041666666667, avg unique terms: 7.904219298245614
+processe 457000 docs, avg len: 7.9405733041575495, avg unique terms: 7.903746170678337
