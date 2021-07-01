@@ -1,0 +1,6 @@
+python genq.py \
+    --max-psg-in 2 \
+    --num-queries 2 \
+    --batch-size 4 \
+    /home/ubuntu/efs/data/msmarco_docs/msmarco-docs.tsv \
+    /home/TRESPI
