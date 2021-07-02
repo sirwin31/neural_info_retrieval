@@ -1,6 +1,6 @@
 python genq.py \
-    --max-psg-in 2 \
+    --max-psg-in 8 \
     --num-queries 2 \
     --batch-size 4 \
-    /home/ubuntu/efs/data/msmarco_docs/msmarco-docs.tsv \
-    /home/TRESPI
+    --output-file /home/ubuntu/neural_info_retrieval/TRESPI/queries.tsv \
+    /home/ubuntu/efs/data/msmarco_docs/msmarco-docs.tsv

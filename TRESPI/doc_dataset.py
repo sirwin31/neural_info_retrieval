@@ -59,6 +59,7 @@ class DocDataset(torch.utils.data.IterableDataset):
                     'url': split_line[1],
                     'title': split_line[2],
                     'text': split_line[3]}
+            #TODO: prepend title to document text and pass to split_doc_text()
             passages = self.split_doc_text(doc['text'])
             for passage in passages:
                 if (self.max_passages is not None and

@@ -3,7 +3,7 @@ import sys
 import pytest
 import torch.utils.data
 
-sys.path.append('/home/ubuntu/TRESPI')
+sys.path.append('/home/ubuntu/neural_info_retrieval/TRESPI')
 
 import doc_dataset as ds
 
