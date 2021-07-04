@@ -1,6 +1,9 @@
 python genq.py \
-    --max-psg-in 8 \
-    --num-queries 2 \
-    --batch-size 4 \
-    --output-file /home/ubuntu/neural_info_retrieval/TRESPI/queries.tsv \
+    --max-docs-in 100 \
+    --num-queries 5 \
+    --t5-batch-size 32 \
+    --psg-min 64 \
+    --psg-tgt 128 \
+    --psg-max 256 \
+    --output-file /home/ubuntu/neural_info_retrieval/TRESPI/output/test_queries8Jul.tsv \
     /home/ubuntu/efs/data/msmarco_docs/msmarco-docs.tsv

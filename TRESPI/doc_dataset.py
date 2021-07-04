@@ -19,7 +19,8 @@ class DocDataset(torch.utils.data.IterableDataset):
                  max_len=512,
                  tgt_len=256,
                  min_len=128,
-                 max_passages=None):
+                 max_passages=None,
+                 max_docs_in=None):
         """Initializes dataset object.
                 Args:
                     doc_path: String, path to msmarco tsv file with
@@ -37,6 +38,10 @@ class DocDataset(torch.utils.data.IterableDataset):
                             after the number of specified passages are
                             generated. Default of None means all data in
                             file will be processed.
+                    max_docs: int, dataset will stop sending data
+                            after the number of specified documents
+                            are generated. Default of None means all
+                            data in file will be processed.
         """
         super(DocDataset).__init__()
         self.doc_path = doc_path
@@ -47,20 +52,25 @@ class DocDataset(torch.utils.data.IterableDataset):
             MODEL_NAME)
         self.max_passages = max_passages
         self.passage_generator = None
+        self.max_docs = max_docs_in
 
     def init_passage_generator(self):
         num_passages = 0
+        doc_counter = 0
         self.dfile = open(self.doc_path, 'rt')
         for line in self.dfile:
             if line == '':
                 return
+            if self.max_docs is not None and doc_counter >= self.max_docs:
+                return
+            doc_counter += 1
             split_line = line.split('\t')
             doc = {'docid': split_line[0],
                     'url': split_line[1],
                     'title': split_line[2],
                     'text': split_line[3]}
             #TODO: prepend title to document text and pass to split_doc_text()
-            passages = self.split_doc_text(doc['text'])
+            passages = self.split_doc_text(doc['title'] + ' ' + doc['text'])
             for passage in passages:
                 if (self.max_passages is not None and
                         num_passages >= self.max_passages):

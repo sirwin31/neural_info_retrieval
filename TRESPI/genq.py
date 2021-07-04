@@ -7,8 +7,8 @@ from torch._C import clear_autocast_cache
 import torch.utils.data
 import transformers
 
-sys.path.append('/home/ubuntu/TRESPI')
-import doc_dataset as ds
+sys.path.append('/home/ubuntu/neural_info_retrieval/TRESPI')
+import batched_dataset as ds
 import util.log
 
 MODEL_NAME = 'castorini/doc2query-t5-base-msmarco'
@@ -32,8 +32,13 @@ parser.add_argument('--max-psg-in', type=int,
                          ' Default is to use all passages in docs file')
 parser.add_argument('--qry-len', type=int, default=64,
                     help='Max length of generated queries')
-parser.add_argument('--batch-size', type=int, default=16,
+parser.add_argument('--t5-batch-size', type=int, default=16,
                     help='Batch size for inputs to doc2query-T5')
+parser.add_argument('--max-docs-in', type=int,
+                    help='Stop after generating queries for this many documents.'
+                         ' Default is to use all documents file')
+parser.add_argument('--doc-read-batch-size', type=int,
+                    help='Number of documents to read from disk at one time')
 
 def expand_list(data, reps):
     """Creates longer list by repeating elements in list.
@@ -55,16 +60,19 @@ def generate_queries():
     for arg, val in vars(args).items():
         logger.info(f'Argument - {arg:>14}: {val}')
 
+
     # Prepare the source documents
     doc_dataset = ds.DocDataset(args.path,
+                                doc_batch_size=args.doc_read_batch_size,
                                 min_len=args.psg_min,
                                 tgt_len=args.psg_tgt,
                                 max_len=args.psg_max,
-                                max_passages=args.max_psg_in)
+                                max_passages=args.max_psg_in,
+                                max_docs_in=args.max_docs_in)
     logger.info('Created document dataset')
     doc_loader = torch.utils.data.DataLoader(
         doc_dataset,
-        batch_size=args.batch_size
+        batch_size=args.t5_batch_size
     )
     logger.info('Created document loader')
 
@@ -92,33 +100,21 @@ def generate_queries():
         mask = batch[3].to(device)       # To GPU
 
         # Run a batch through T5 model
-        outputs = model.generate(
-            input_ids = input_ids,
-            attention_mask = mask,
-            max_length=args.qry_len,
-            do_sample=True,
-            top_k=10,
-            num_return_sequences=args.num_queries)
-
-        # # Display output
-        # print('Passages=======')
-        # for idx, doc_id in enumerate(doc_ids):
-        #     print(doc_id, positions[idx],
-        #          tokenizer.decode(input_ids[idx], skip_special_tokens=True))
-        # print()
-
-        # print('Queries======')
-        # for qry in outputs:
-        #     qry_txt = tokenizer.decode(qry, skip_special_tokens=True)
-        #     print(qry_txt)
-
-        
+        with torch.no_grad():
+            outputs = model.generate(
+                input_ids = input_ids,
+                attention_mask = mask,
+                max_length=args.qry_len,
+                do_sample=True,
+                top_k=10,
+                num_return_sequences=args.num_queries)
+            
         for idx, qry in enumerate(outputs):
             qry_txt = tokenizer.decode(qry, skip_special_tokens=True)
             line = f'{doc_ids[idx]}\t{positions[idx]}\t{qry_txt}\n'
             ofile.write(line)
-            # print(line)
 
+    logger.info('Finished all batches')
     ofile.close()
     doc_dataset.close()
 
