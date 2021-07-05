@@ -1,0 +1,48 @@
+anserini
+https://github.com/castorini/anserini
+
+# these are the depends for the install
+sudo apt-get install openjdk-11-jdk
+sudo apt install maven
+
+# clone and ensure to get the submodules
+git clone https://github.com/castorini/anserini.git --recurse-submodules
+
+# set the JAVA_HOME otherwise javadoc will fail
+export JAVA_HOME=/usr
+
+# build using maven
+mvn clean package appassembler:assemble
+
+# build the tools repo
+cd tools/eval && tar xvfz trec_eval.9.0.4.tar.gz && cd trec_eval.9.0.4 && make && cd ../../..
+cd tools/eval/ndeval && make && cd ../../..
+
+# convert the MS Marco collection into Anserini files
+python tools/scripts/msmarco/convert_collection_to_jsonl.py \
+ --collection-path /home/ubuntu/efs/wadeholmes/tfweight \
+ --output-folder /home/ubuntu/efs/wadeholmes/collection_jsonl
+
+# this indexes the documents as a collection
+sh target/appassembler/bin/IndexCollection -threads 9 -collection JsonCollection \
+ -generator DefaultLuceneDocumentGenerator -input /home/ubuntu/efs/wadeholmes/collection_jsonl \
+ -index /home/ubuntu/efs/wadeholmes/lucene-index-msmarco -storePositions -storeDocvectors -storeRaw 
+
+python tools/scripts/msmarco/filter_queries.py \
+ --qrels collections/msmarco-passage/qrels.train.tsv \
+ --queries collections/msmarco-passage/queries.train.tsv \
+ --output collections/msmarco-passage/queries.train.small.tsv
+
+# this should perform retrieval
+sh target/appassembler/bin/SearchMsmarco -hits 1000 -threads 4 \
+ -index /home/ubuntu/efs/wadeholmes/lucene-index-msmarco \
+ -queries collections/msmarco-passage/queries.train.small.tsv \
+ -output runs/run.msmarco-passage.train.tsv
+
+# we have to normalize the document id
+mv runs/run.msmarco-passage.train.tsv runs/run.msmarco-passage.train.tsv.tmp
+python3 reformat_document.py runs/run.msmarco-passage.train.tsv.tmp > runs/run.msmarco-passage.train.tsv
+
+# now we perform evaluation
+python tools/scripts/msmarco/msmarco_passage_eval.py \
+ collections/msmarco-passage/qrels.train.tsv runs/run.msmarco-passage.train.tsv
