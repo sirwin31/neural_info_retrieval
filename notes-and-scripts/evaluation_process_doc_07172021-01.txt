@@ -1,0 +1,72 @@
+anserini
+https://github.com/castorini/anserini
+
+https://github.com/microsoft/MSMARCO-Document-Ranking
+
+# these are the depends for the install
+sudo apt-get install openjdk-11-jdk
+sudo apt install maven
+
+# clone and ensure to get the submodules
+git clone https://github.com/castorini/anserini.git --recurse-submodules
+
+# set the JAVA_HOME otherwise javadoc will fail
+export JAVA_HOME=/usr
+
+# build using maven
+mvn clean package appassembler:assemble
+
+# build the tools repo
+cd tools/eval && tar xvfz trec_eval.9.0.4.tar.gz && cd trec_eval.9.0.4 && make && cd ../../..
+cd tools/eval/ndeval && make && cd ../../..
+
+# set environment variables that we will require
+export MODEL_HOME=/home/ubuntu/efs/trainvol/trespi
+export ANSERINI_HOME=/home/ubuntu/efs/anserini
+export RUN_HOME=/home/ubuntu/efs/msmarco_leaderboard_attempt1
+export QUERIES=/home/ubuntu/efs/query_termweights_14Jul/msmarco_query_dataset.jsonl
+export PASSAGE_WEIGHTS=/home/ubuntu/efs/query_termweights_14Jul/predictions/qry_psg_weights.tsv
+export COLLECTION_HDCT=$RUN_HOME/collection_hdct.tsv
+export COLLECTION_ANSERINI=$RUN_HOME/collection_anserini
+export LUCENE_INDEX=$RUN_HOME/lucene_idx_07172021
+
+mkdir -p $COLLECTION_ANSERINI
+mkdir -p $RUN_HOME/runs
+
+# this block converts the weights file (passage weights) to a frequency of words
+# document in plain text (even though it says json)
+cd $MODEL_HOME
+python3 $MODEL_HOME/DeepCT/HDCT/passage2doc_bert_term_sample_to_json.py $QUERIES $PASSAGE_WEIGHTS $COLLECTION_HDCT 100
+
+# this script converts the frequency file above into a json formatted frequency files suitable
+# for indexing, presumably
+cd $ANSERINI_HOME
+
+# convert the new documents into Anserini JSON format (aka the collection) 
+python3 tools/scripts/msmarco/convert_collection_to_jsonl.py \
+--collection-path $COLLECTION_HDCT \
+--output-folder $COLLECTION_ANSERINI
+
+# generate the Lucene index for the collection of documents
+sh target/appassembler/bin/IndexCollection -threads 1 -collection JsonCollection \
+ -generator DefaultLuceneDocumentGenerator -input $COLLECTION_ANSERINI \
+ -index $LUCENE_INDEX -storePositions -storeDocvectors -storeRaw
+
+# search the collection
+target/appassembler/bin/SearchCollection -topicreader TsvInt \
+ -index $LUCENE_INDEX \
+ -topics src/main/resources/topics-and-qrels/topics.msmarco-doc.dev.txt \
+ -output $RUN_HOME/runs/run.msmarco-doc.dev.bm25.txt -bm25
+
+##
+# this is for the actual submission and leaderboard judgement
+sh target/appassembler/bin/SearchMsmarco -hits 100 -threads 1 \
+ -index $LUCENE_INDEX \
+ -queries src/main/resources/topics-and-qrels/topics.msmarco-doc.dev.txt \
+ -output $RUN_HOME/runs/run.msmarco-doc.leaderboard-dev.bm25base.txt -k1 0.9 -b 0.4
+
+# score for the eval leaderboard
+python3 tools/scripts/msmarco/msmarco_doc_eval.py \
+ --judgments src/main/resources/topics-and-qrels/qrels.msmarco-doc.dev.txt \
+ --run $RUN_HOME/runs/run.msmarco-doc.leaderboard-dev.bm25base.txt 
+
