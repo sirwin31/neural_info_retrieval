@@ -19,6 +19,7 @@ python doc_to_psg.py \
     --num-docs 1000 \ # Number of lines in input file (for progress bar)
     --output-file passages \  # Output files written to this folder.
     msmarco-docs1000.tsv
+```
 
 Other available arguments:
     --num-docs NNN: positive integer, used for testing. Only processed
