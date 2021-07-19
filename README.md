@@ -82,3 +82,14 @@ In summary, the distribution of datafiles contains a dev, train, and complete sp
 -rw-rw-r-- 1 ubuntu ubuntu     7139968 Jul 19 22:24 msmarco_docs1000.tsv
 -rw-r--r-- 1 root   root        774538 Jun 18 01:45 test.100
 ```
+
+# Current Results
+
+Model Description | Model Run Number | MRR@100:DEV
+------------------|------------------|------------
+t5 body only | 1 | 0.267145665
+Baseline msmarco doc | 2 | 0.208895567
+tanh passage normalization | 3| 0.248216869
+gaussian passage normalization | 4 | 0.015785233
+t5 body and HDCT body | 5 | 0.266048369
+
