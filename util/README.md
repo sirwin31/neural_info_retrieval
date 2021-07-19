@@ -17,6 +17,10 @@ doc_idx = indexer.IndexedFile('docs00.tsv', 0)
 record = doc_idx['D3502052']
 ```
 
+The *docs00.json* and *docs00.tsv* files are examples of text files that can
+be indexed with an `indexer.IndexedFile` object. The *tests* folder
+contains a simple *pytest* test of the IndexedFile object.
+
 ## log.py
 Returns a Python Standard Library logger object that logs messages to a
 file and the console.
