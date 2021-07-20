@@ -22,6 +22,41 @@ DeepCT prediction step. Tools and guidance are in the
 
 ### 4. Generate Dataset File for Converting DeepCT Weights to HDCT Weights
 
+### 5. Combine queries, passage weights to form ANSERINI collection
+```
+cd $MODEL_HOME
+python3 $MODEL_HOME/DeepCT/HDCT/passage2doc_bert_term_sample_to_json_tanh.py $QUERIES $PASSAGE_WEIGHTS $COLLECTION_HDCT 100
+
+```
+### 6. Convert the new documents into Anserini JSON format (aka the collection)
+```
+cd $ANSERINI_HOME
+python3 tools/scripts/msmarco/convert_collection_to_jsonl.py \
+--collection-path $COLLECTION_HDCT \
+--output-folder $COLLECTION_ANSERINI
+```
+
+### 7. Generate the Lucene index for the collection of documents
+```
+sh target/appassembler/bin/IndexCollection -threads 1 -collection JsonCollection \
+ -generator DefaultLuceneDocumentGenerator -input $COLLECTION_ANSERINI \
+ -index $LUCENE_INDEX -storePositions -storeDocvectors -storeRaw
+```
+
+### 8. For dev, perform a simulated leaderboard judgement
+```
+sh target/appassembler/bin/SearchMsmarco -hits 100 -threads 1 \
+ -index $LUCENE_INDEX \
+ -queries src/main/resources/topics-and-qrels/topics.msmarco-doc.dev.txt \
+ -output $RUN_HOME/runs/run.msmarco-doc.leaderboard-dev.bm25base.txt -k1 0.9 -b 0.4
+```
+
+### 9. Evalate the performance
+```
+python3 tools/scripts/msmarco/msmarco_doc_eval.py \
+ --judgments src/main/resources/topics-and-qrels/qrels.msmarco-doc.dev.txt \
+ --run $RUN_HOME/runs/run.msmarco-doc.leaderboard-dev.bm25base.txt 
+```
 
 # About MSMarco
 MS Marco is a collection of research datasets intended to advance AI and related fields.  The document dataset of interest for this work is the MS Marco Document retreval dataset which was released in August of 2020 by Microsoft.  To compare results and create a competative environment which can advance Bing search efficency, Microsoft created the MSMARCO Document Ranking competition and [leaderboard](https://microsoft.github.io/msmarco/).
