@@ -35,18 +35,27 @@ import sys
 
 from tqdm import tqdm
 
-HOME_PATH = '/home/ubuntu/efs/query_termweights_14Jul'
-sys.path.append(HOME_PATH)
-import util.msutils
+sys.path.insert(0, os.path.abspath('..'))
+import util.indexer
 
+desc = ("Converts docT5query dataset into a single TSV document file "
+        "suitable for processing with DeepCT.")
 
-
-HOME_PATH = '/home/ubuntu/efs/query_termweights_14Jul'
-QUERIES_PATH = os.path.join(HOME_PATH, 'dT5_queries/predicted')
-DOCIDS_PATH = os.path.join(HOME_PATH, 'dT5_queries/msmarco_doc_passage_ids.txt')
-DOCS_PATH = '/home/ubuntu/efs/data/msmarco_docs/msmarco-docs.tsv'
-OUTPUT_PATH = os.path.join(HOME_PATH, 'dT5_queries/msmarco-queries.tsv')
-
+parser = argparse.ArgumentParser(desc)
+parser.add_argument('--queries-folder',
+                   help='Path to folder with docT5query msmarco query files.')
+parser.add_argument('--queries-per-psg', type=int, default=10,
+                    help='Number of queries to read from docT5query dataset.')
+parser.add_argument('--doc-ids-path',
+                    help='Path to msmarco_doc_passage_ids.txt file.')                    
+parser.add_argument('--msmarco-docs-path',
+                    help='Path to msmarco document file (msmarco-docs.tsv).')
+parser.add_argument('--output-path', help='Path to output file.')
+parser.add_argument('--files-per-sample', type=int, default=33,
+                    help='Number of docT5query files per sample.')
+help_msg = 'Number of documents to create. All docs processed if omitted.'
+parser.add_argument('--max-docs', type=int, default=None,
+                    help=help_msg)
 
 # Helper Functions
 def _close_files(files):
@@ -64,7 +73,9 @@ def _clean_queries(queries):
 
 
 # Iterators
-def _read_queries_from_files(queries_per_psg):
+def _read_queries_from_files(queries_folder,
+                            queries_per_psg,
+                            files_per_sample):
     """An iterator that reads queries from docT5query files.
 
     Args:
@@ -121,15 +132,14 @@ def _read_queries_from_files(queries_per_psg):
     in parallel.
     """
     try:
-        for file_num in range(33):
+        for file_num in range(files_per_sample):
             # Each file has one query per passage. Open one file for
             #   each query that will be returned.
             query_file_names = [
                 f'predicted_queries_doc_sample{qnum:03}'
                 f'.txt{file_num:03}-1004000'
                 for qnum in range(queries_per_psg)]
-            print('Reading files:', query_file_names)
-            query_files = [open(os.path.join(QUERIES_PATH, qf_name))
+            query_files = [open(os.path.join(queries_folder, qf_name))
                         for qf_name in query_file_names]
             while True:
                 # Read a query from each open file
@@ -142,16 +152,20 @@ def _read_queries_from_files(queries_per_psg):
         _close_files(query_files)
     _close_files(query_files)
 
-def _get_docids():
+def _get_docids(doc_ids_path):
     """Iterates over the docT5query passage to doc_id mapping file.
 
     Returns a doc_id string.
     """
-    with open(DOCIDS_PATH) as idfile:
+    with open(doc_ids_path) as idfile:
         for line in idfile:
             yield line.strip()
 
-def _get_doc_queries(queries_per_psg, max_docs=0):
+def _get_doc_queries(queries_folder,
+                     doc_ids_path,
+                     queries_per_psg,
+                     files_per_sample,
+                     max_docs=0):
     """Returns a doc_id and a list of all queries for the document.
 
     Args:
@@ -169,8 +183,10 @@ def _get_doc_queries(queries_per_psg, max_docs=0):
     """
     curr_docid = ''
     doc_num = 0  # For tracking number of documents processed
-    for doc_id, query_list in zip(_get_docids(),
-                                  _read_queries_from_files(queries_per_psg)):
+    for doc_id, query_list in zip(_get_docids(doc_ids_path),
+                                  _read_queries_from_files(queries_folder,
+                                                           queries_per_psg,
+                                                           files_per_sample)):
         if doc_id != curr_docid:
             if curr_docid:
                 yield (curr_docid, [qry for qlist in queries for qry in qlist])
@@ -187,7 +203,13 @@ def _get_doc_queries(queries_per_psg, max_docs=0):
 
 
 # Primary Function
-def create_query_docs(queries_per_psg=1, max_docs=0):
+def create_query_docs(queries_folder,
+                      doc_ids_path,
+                      msmarco_docs_path,
+                      output_path,
+                      queries_per_psg=10,
+                      files_per_sample=33,
+                      max_docs=None):
     """Creates a TSV file containing queries from docT5query.
 
     The results are written to the file specified by OUTPUT_PATH
@@ -201,15 +223,20 @@ def create_query_docs(queries_per_psg=1, max_docs=0):
 
     Returns: None
     """
-    doc_idx = util.msutils.DocIndex(DOCS_PATH)
+    doc_idx = util.indexer.IndexedFile(msmarco_docs_path, 0)
     total_docs = len(doc_idx)
     if max_docs is not None:
         docs_to_process = min(total_docs, max_docs)
     else:
         docs_to_process = total_docs
-    print('Writing output to', OUTPUT_PATH)
-    with open(OUTPUT_PATH, 'wt') as ofile:
-        for doc_id, qset in tqdm(_get_doc_queries(queries_per_psg, max_docs),
+    print(max_docs, total_docs, docs_to_process)
+    print('Writing output to', output_path)
+    with open(output_path, 'wt') as ofile:
+        for doc_id, qset in tqdm(_get_doc_queries(queries_folder,
+                                                  doc_ids_path,
+                                                  queries_per_psg,
+                                                  files_per_sample,
+                                                  max_docs),
                                 'Docs Processed', docs_to_process):
             _, url, title, text = doc_idx[doc_id].split('\t')
             query_txt = ' '.join(_clean_queries(qset))
@@ -218,11 +245,13 @@ def create_query_docs(queries_per_psg=1, max_docs=0):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description='Creates msmarco documents based on docT5query queries.')
-    parser.add_argument('--queries-per-psg', type=int, default=10)
-    parser.add_argument('--max-docs', type=int, default=0)
     args = parser.parse_args()
 
-    create_query_docs(args.queries_per_psg, args.max_docs)
+create_query_docs(args.queries_folder,
+                  args.doc_ids_path,
+                  args.msmarco_docs_path,
+                  args.output_path,
+                  args.queries_per_psg,
+                  args.files_per_sample,
+                  args.max_docs)
 
