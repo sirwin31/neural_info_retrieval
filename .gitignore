@@ -1,5 +1,6 @@
 # Added by Stacy Irwin
 .vscode/
+**/.ipynb_checkpoints
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
