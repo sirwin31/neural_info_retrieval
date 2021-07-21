@@ -83,13 +83,13 @@ source deepct_predict.sh \
 ```
 
 The example command will run DeepCT predictions on four files:
-    * passages_002.tsv
-    * passages_003.tsv
-    * passages_004.tsv
-    * passages_005.tsv
+  * passages_002.tsv
+  * passages_003.tsv
+  * passages_004.tsv
+  * passages_005.tsv
 
 The output files will be in folder `~/predictions_output`:
-    * psg_weights_002.tsv
-    * psg_weights_003.tsv
-    * psg_weights_004.tsv
-    * psg_weights_005.tsv
+  * psg_weights_002.tsv
+  * psg_weights_003.tsv
+  * psg_weights_004.tsv
+  * psg_weights_005.tsv
