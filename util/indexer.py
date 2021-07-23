@@ -142,7 +142,7 @@ class IndexedFile():
                 return self.file.readline()
             else:
                 error_msg = ('Key {} does not exist in index.'
-                             .format(idx_record[0]))
+                             .format(key))
                 raise KeyError(error_msg)
         if isinstance(key, int):
             if self.lines is None:
