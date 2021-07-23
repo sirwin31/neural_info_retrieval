@@ -122,9 +122,12 @@ In summary, the distribution of datafiles contains a dev, train, and complete sp
 
 Model Description | Model Run Number | MRR@100:DEV | Improvement
 ------------------|------------------|-------------|------------
-Baseline HDCT MSMARCO Doc | - | 0.208895567 | 0.0
-t5 body only | 1 | 0.267145665 | 0.058250
-tanh passage normalization | 2| 0.248216869 | 0.039321
-gaussian passage normalization | 3 | 0.015785233 | -0.19311
-t5 body and HDCT body | 4 | 0.266048369 | 0.057153
+Baseline HDCT MSMARCO Doc | - | 0.20889 | 0.0
+t5 body only | 2 | 0.267145665 | 0.05825
+tanh passage normalization | 3| 0.24821 | 0.039321
+gaussian passage normalization | 4 | 0.01578 | -0.19311
+t5 body and HDCT body | 5 | 0.26604 | 0.057153
+Averaging Method | 6 | 0.25065 | 0.04176
+#####################
+
 
