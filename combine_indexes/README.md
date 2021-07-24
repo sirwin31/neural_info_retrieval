@@ -50,7 +50,7 @@ requires two additional method calls.
     needed for the join. The key is the name of the argument.
     For example, join_docs_avg_weights_qry_discount requires one
     additional argument, 'qry_discount'. For this join type, the
-    join_args argument should be `{'qry_discount': F.F} where F.F is
+    join_args argument should be `{'qry_discount': F} where F is
     a floating point number.
 2. IndexJoiner.join_indexes(output_path)
     * output_path is a path to an empty folder. The joined index
