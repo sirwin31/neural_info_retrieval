@@ -130,5 +130,6 @@ t5 body and HDCT body | 5 | 0.26604 | 0.057153
 Averaging Method | 6 | 0.25065 | 0.04176
 Max Method | 7 | 0.26151 | 0.05262
 T5 body with tanh | 8 | 0.27155 | 0.06266
+T5 body with tanh (optimized) | 8+ | 0.292507 | 0.083617
 
 
