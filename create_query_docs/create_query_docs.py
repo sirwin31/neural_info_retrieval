@@ -56,6 +56,8 @@ parser.add_argument('--files-per-sample', type=int, default=33,
 help_msg = 'Number of documents to create. All docs processed if omitted.'
 parser.add_argument('--max-docs', type=int, default=None,
                     help=help_msg)
+parser.add_argument('--append-text', type=bool, default=False,
+                    help='Appends original document text if True.')
 
 # Helper Functions
 def _close_files(files):
@@ -209,7 +211,8 @@ def create_query_docs(queries_folder,
                       output_path,
                       queries_per_psg=10,
                       files_per_sample=33,
-                      max_docs=None):
+                      max_docs=None,
+                      append_text=False):
     """Creates a TSV file containing queries from docT5query.
 
     The results are written to the file specified by OUTPUT_PATH
@@ -238,9 +241,12 @@ def create_query_docs(queries_folder,
                                                   files_per_sample,
                                                   max_docs),
                                 'Docs Processed', docs_to_process):
-            _, url, title, text = doc_idx[doc_id].split('\t')
+            _, url, title, doc_text = doc_idx[doc_id].split('\t')
             query_txt = ' '.join(_clean_queries(qset))
+            if append_text:
+                query_txt = query_txt + ' ' + doc_text[:-1]
             output = '\t'.join([doc_id, url, title, query_txt]) + '\n'
+                
             ofile.write(output)
 
 
@@ -253,5 +259,6 @@ create_query_docs(args.queries_folder,
                   args.output_path,
                   args.queries_per_psg,
                   args.files_per_sample,
-                  args.max_docs)
+                  args.max_docs,
+                  args.append_text)
 
