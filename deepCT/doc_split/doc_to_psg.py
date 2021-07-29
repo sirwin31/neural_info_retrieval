@@ -15,7 +15,7 @@ Typical useage:
 mkdir passages
 python doc_to_psg.py \
     --psg-length 200 \  # Desired number of words in each passage.
-    --lines-per-output-file 200 \ # Number of lines in each output file.
+    --docs-per-output-file 200 \ # Number of lines in each output file.
     --num-docs 1000 \ # Number of lines in input file (for progress bar)
     --output-file passages \  # Output files written to this folder.
     msmarco-docs1000.tsv
@@ -69,12 +69,12 @@ parser.add_argument('--psg-length', type=int, default=275,
 num_docs_help = 'Expected number of docs in input file'
 parser.add_argument('--num-docs', type=int, default=None,
                     help=num_docs_help)
-parser.add_argument('--lines-per-output-file', type=int, default=100_000,
+parser.add_argument('--docs-per-output-file', type=int, default=100_000,
                     help='Number of lines in each output file.')
 parser.add_argument('path', help='Path to TSV file with MS Marco documents')
 
 
-def split(doc_path, output_path, psg_len, output_num_lines, doc_total=None):
+def split(doc_path, output_path, psg_len, output_num_docs, doc_total=None):
     """Splits a MSMARCO TSV file into separate passages.
 
     Args:
@@ -92,7 +92,7 @@ def split(doc_path, output_path, psg_len, output_num_lines, doc_total=None):
         ofile = None
         for idx, line in tqdm(enumerate(dfile), 'Docs Processed', doc_total):
             # Start writing output to a new file
-            if idx % output_num_lines == 0:
+            if idx % output_num_docs == 0:
                 full_output_path = ('{}_{:03d}.tsv'
                                     .format(output_path, output_file_num))
                 if ofile is not None:
@@ -141,5 +141,5 @@ if __name__ == '__main__':
     split(args.path,
           args.output_file,
           args.psg_length,
-          args.lines_per_output_file,
+          args.docs_per_output_file,
           args.num_docs)
