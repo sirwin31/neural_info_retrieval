@@ -1,8 +1,8 @@
 # TRESPI
 ## **TR**ansformers for **E**xpansion of **SP**arse **I**ndexes
 This repository contains the code and documentation for TRESPI, our
-capsone project for the Masters of Information and Data Science (MIDS)
-program at the Univeristy of California Berkeley. The project group is
+capstone project for the Masters of Information and Data Science (MIDS)
+program at the University of California Berkeley. The project group is
 comprised of Joanna Wang, Manpreet Khural, Stacy Irwin, and Wade Holmes.
 The project was completed for the Summer 2021 term.
 
@@ -25,10 +25,11 @@ Related Links
 
 ## Description
 The HDCT model, described in Dai and Callan's paper, uses a BERT-based
-model to generate term-weights for an inverted document index that can be
+model to generate term-weights for an inverted document index. The
+inverted index can be
 searched with a probabilistic model like BM25. Instead of basing the
-term's weight on it's frequency or the number of documents in which it
-appears, HDCT evaluate's the term's context and estimates the term's
+term's weight on its frequency or the number of documents in which it
+appears, HDCT evaluates the term's context and estimates the term's
 relevance to the document's topic.
 
 The docT5query model uses a T5 sequence-to-sequence model to generate
@@ -70,7 +71,7 @@ be used for processing the dataset and generating a TRESPI document index.
 
 ### 1. Generate Dataset from DocT5query
 The [docT5query](docT5query) folder contains code related to the
-docT5query model. The [generate subfolder](docT5query/generate) contains
+docT5query model. The [docT5query/generate subfolder](docT5query/generate) contains
 our PyTorch prediction loop code, which can be used to generate
 queries using the
 [Huggingface implementation of the docT5query model](https://huggingface.co/castorini/doc2query-t5-base-msmarco). We used an AWS g4dn extra large EC2 instance
@@ -80,12 +81,8 @@ Our single g4dn EC2 instance was not sufficient to generate queries for
 all document in the MSMARCO dataset -- we estimated that processing the
 entire dataset would take about 1,400 hours. We decided to use queries
 that Nogueira and Lin had already generated from the MSMARCO dataset.
-Nogueira and Lin split the MSMARCO documents into passages and generated
-ten queries for each passage. These queries can be downloaded from links
-link on the [docT5query Github repository.](https://github.com/castorini/docTTTTTquery)
-The queries are contained in 330 text files. The code for converting the
-330 text files into a set of query documents suitable for submission to
-the HDCT model is in the [create_query_docs subfolder](docT5query/create_query_docs).
+See the [docT5query/download subfolder](docT5query/download) subfolder
+for guidance on downloading and processing the pre-generated queries.
 
 ### 2. DeepCT
 The HDCT model uses an earlier model that was developed by Dai and Callan.
@@ -156,8 +153,6 @@ file. The [HDCT/gen_dataset.py](HDCT/gen_dataset.py) module will generate
 the dataset file.
 
 **TODO**: Clean up gen_dataset script. 
-
-### 4. Generate Dataset File for Converting DeepCT Weights to HDCT Weights
 
 ### 5. Combine queries, passage weights to form ANSERINI collection
 ```

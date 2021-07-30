@@ -15,7 +15,7 @@ import sys
 from tqdm import tqdm
 
 sys.path.append('..')
-import util.msutils
+import util.indexer
 
 PSG_FILES = '/home/ubuntu/efs/query_termweights_14Jul/dT5_passages'
 CORPUS = '/home/ubuntu/efs/query_termweights_14Jul/dT5_queries/msmarco-queries.tsv'
