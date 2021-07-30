@@ -19,7 +19,7 @@ model.
 The [deepCT/predict](predict) subfolder contains guidance and code for
 submitting passages to DeepCT and generating passage-level predictions.
 
-## Use Preprocessed Passages Downloaded from AWS S3
+## Alternative to Step #1: Use Preprocessed Passages Downloaded from AWS S3
 A full set of documents and queries that have already been split into
 passages for submission to the DeepCT model are available from AWS S3.
 The files are formatted as two-column TSV files, with the first column

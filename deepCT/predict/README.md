@@ -29,7 +29,19 @@ lines.
 Status messages are written to the predict.log file. The predict.log
 file is saved in the folder from which deepct_predict.sh is run.
 
-## Running `deepct_predict.sh`
+## Generating DeepCT Predictions
+
+### System Setup
+1. Clone the official DeepCT repository at https://github.com/AdeDZY/DeepCT.
+2. Download the BERT model from its official Github repository at
+https://github.com/google-research/bert. Specifically, download the
+`uncased_L-12_H-768_A-12` version of the
+[pretrained BERT model](https://storage.googleapis.com/bert_models/2020_02_20/uncased_L-12_H-768_A-12.zip).
+3. Follow the instructions in the section title
+*Run DeepCT 2: Use DeepCT to Predict Term Weights (Inference)* on the DeepCT
+README.md page to download the DeepCT model checkpoint configure the DeepCT
+repository for inference.
+
 ### Python Environment Setup
 DeepCT will automatically use a GPU if it detects a CUDA environment.
 DeepCT requires Tensorflow 1.15. To run DeepCT, our team used an
@@ -54,13 +66,6 @@ where NNN is a file sequence number starting at 000.
 ### Create Output Folder
 The `deepct_predict.sh` script will generate multiple output files.
 Create an empty folder to contain these files.
-
-### Prepare BERT and DeepCT Repositories.
-1. Download the uncased_L-12_H-768_A-12 BERT model from the
-[offical Google BERT repository](https://github.com/google-research/bert).
-2. Clone the [DeepCT Github Repository](https://github.com/AdeDZY/DeepCT).
-3. Follow instructions in the DeepCT Github README page to download model
-data to the repository's *data* subfolder.
 
 ### Run DeepCT Prediction
 deepct_predict.sh requires six positional arguments:
