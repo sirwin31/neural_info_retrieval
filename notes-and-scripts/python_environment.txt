@@ -3,7 +3,7 @@
 https://github.com/AdeDZY/DeepCT
 
 # set up the virtual python
-apt-get install python3-venv
+apt-get install python3-venv six
 python3 -m venv venv_deepct/
 source venv_deepct/bin/activate
 
@@ -88,4 +88,3 @@ python run_deepct.py \
  --num_train_epochs=3.0 \
  --output_dir=$OUTPUT_DIR
 
-/dev/xvdf on /home/ubuntu/trainvol

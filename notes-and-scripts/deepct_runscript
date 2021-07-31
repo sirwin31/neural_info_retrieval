@@ -41,3 +41,16 @@ python run_deepct.py \
 
 cd $MODEL_HOME
 python3 $MODEL_HOME/DeepCT/HDCT/passage2doc_bert_term_sample_to_json.py $DOCUMENT_INDEX $OUTPUT_FILENAME tfweight 100
+
+# this is for testing only
+# set environment variables that we will require
+export MODEL_HOME=/home/ubuntu/efs/trainvol/trespi
+export BERT_BASE_DIR=$MODEL_HOME/uncased_L-12_H-768_A-12
+export INIT_CKPT=./output/marco/model.ckpt-0
+export INPUT_DATA_FILE=/home/ubuntu/efs/wadeholmes/passages_trespi_intdex.txt
+export OUTPUT_DIR=./predictions/marco/trespi
+export OUTPUT_FILENAME=$MODEL_HOME/DeepCT/$OUTPUT_DIR/test_results.tsv
+export DOCUMENT_INDEX=/home/ubuntu/efs/wadeholmes/documents_index.txt
+
+cd $MODEL_HOME
+python3 $MODEL_HOME/DeepCT/HDCT/passage2doc_bert_term_sample_to_json_instr.py $DOCUMENT_INDEX $OUTPUT_FILENAME tfweight2 100 | more

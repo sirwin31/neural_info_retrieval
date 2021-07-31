@@ -1,0 +1,17 @@
+python3 passage2doc_bert_term_sample_to_json.py \
+  dataset_file=../data/marco/myalltrain.relevant.docterm_recall \
+  prediction_file=../predictions/marco/collection_pred_1/predict.tf_record \
+  ouput_file=../output/marco/model.ckpt-0.data-00000-of-00001
+  m=2
+
+
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('dataset_file', help='Dataset json file')
+    parser.add_argument('prediction_file', help='Prediction json File')
+    parser.add_argument('output_file', help='Output File')
+    parser.add_argument('m', type=int, help='Thred > 0')
+    parser.add_argument('--output_format', type=str, choices=["tsv", "json"], default="tsv")
+    parser.add_argument('--tf_agg_method', type=str, choices=["avg", "sum", "position_decay_avg", "position_decay_sum", "max"], default="avg")
+    parser.add_argument('--max_number_passages', type=int, default=10000)
+    args = parser.parse_args()

@@ -1,6 +1,6 @@
 
 
-export ROBERTA_HOME=/home/ubuntu/efs/roberta
+export ROBERTA_HOME=/home/ubuntu/trainvol/roberta
 source /home/ubuntu/venv_deepct/bin/activate
 
 # set environment for roberta base
@@ -41,8 +41,8 @@ python3 run_deepct.py \
 #
 
 # set environment variables that we will require
-export BASELINE_HOME=/home/ubuntu/efs/baseline
-export BERT_BASE_DIR=$BASELINE_HOME/uncased_L-12_H-768_A-12
+export ROBERTA_HOME=/home/ubuntu/trainvol/roberta
+export BERT_BASE_DIR=$ROBERTA_HOME/roberta.base
 export INIT_CKPT=./output/marco/model.ckpt-0
 export TEST_DATA_FILE=./data/marco/collection.tsv.1
 export OUTPUT_DIR=./predictions/marco/collection_pred_1/
