@@ -1,0 +1,41 @@
+anserini
+https://github.com/castorini/anserini
+
+https://github.com/microsoft/MSMARCO-Document-Ranking
+
+# these are the depends for the install
+sudo apt-get install openjdk-11-jdk
+sudo apt install maven
+
+# clone and ensure to get the submodules
+git clone https://github.com/castorini/anserini.git --recurse-submodules
+
+# set the JAVA_HOME otherwise javadoc will fail
+export JAVA_HOME=/usr
+
+# build using maven
+mvn clean package appassembler:assemble
+
+# build the tools repo
+cd tools/eval && tar xvfz trec_eval.9.0.4.tar.gz && cd trec_eval.9.0.4 && make && cd ../../..
+cd tools/eval/ndeval && make && cd ../../..
+
+# convert the MS Marco collection into Anserini files
+python tools/scripts/msmarco/convert_collection_to_jsonl.py \
+--collection-path /home/ubuntu/efs/trainvol/trespi/tfweight \
+--output-folder /home/ubuntu/efs/wadeholmes/collection_jsonl
+
+# this indexes the documents as a collection
+sh target/appassembler/bin/IndexCollection -threads 9 -collection JsonCollection \
+ -generator DefaultLuceneDocumentGenerator -input /home/ubuntu/efs/wadeholmes/collection_jsonl \
+ -index /home/ubuntu/efs/wadeholmes/lucene-index-msmarco -storePositions -storeDocvectors -storeRaw 
+
+sh target/appassembler/bin/SearchMsmarco -hits 100 -k1 0.9 -b 0.4 -threads 1 \
+   -index /home/ubuntu/efs/wadeholmes/lucene-index-msmarco \
+   -queries collections/msmarco-document/msmarco-doctrain-queries.tsv \
+   -output runs/run.msmarco-doc.bm25-default.txt
+
+python tools/scripts/msmarco/msmarco_doc_eval.py \
+   --judgments collections/msmarco-document/msmarco-doctrain-qrels.tsv \
+   --run runs/run.msmarco-doc.bm25-default.txt
+

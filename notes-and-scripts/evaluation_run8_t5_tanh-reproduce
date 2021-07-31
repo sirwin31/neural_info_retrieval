@@ -1,0 +1,18 @@
+reproduction of the tanh+t5body with optimized hyperparameters
+
+
+#####################
+MRR @100: 0.2922485254532393
+QueriesRanked: 5193
+#####################
+
+
+COLLECTION_HDCT=/home/ubuntu/efs/msmarco_leaderboard_attempt8-val/collection_hdct.tsv
+COLLECTION_ANSERINI=/home/ubuntu/efs/msmarco_leaderboard_attempt8-val/collection_answerini
+ANSERINI_HOME=/home/ubuntu/efs/anserini
+LUCENE_INDEX=/home/ubuntu/efs/msmarco_leaderboard_attempt8-val/lucene_idx_07232021
+MODEL_HOME=/home/ubuntu/efs/trainvol/trespi
+QUERIES=/home/ubuntu/efs/query_termweights_14Jul/msmarco_query_dataset.jsonl
+RUN_HOME=/home/ubuntu/efs/msmarco_leaderboard_attempt8-val
+
+-k1 10.3 -b 0.7
