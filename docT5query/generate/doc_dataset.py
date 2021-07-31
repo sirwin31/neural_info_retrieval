@@ -1,11 +1,16 @@
 """Functions for generating queries with doc2query-T5
 """
+import os.path
+import sys
+
 import nltk.tokenize
 import torch
 import torch.utils.data
 import transformers
 
-
+dirname = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.abspath(os.path.join(dirname, '../..'))
+sys.path.insert(0, repo_root)
 import util.indexer
 
 MODEL_NAME = 'castorini/doc2query-t5-base-msmarco'

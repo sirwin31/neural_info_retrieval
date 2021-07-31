@@ -152,8 +152,6 @@ identifies the document ID and passage number of each row in the predictions
 file. The [HDCT/gen_dataset.py](HDCT/gen_dataset.py) module will generate
 the dataset file.
 
-**TODO**: Clean up gen_dataset script. 
-
 ### 5. Combine queries, passage weights to form ANSERINI collection
 ```
 cd $MODEL_HOME
