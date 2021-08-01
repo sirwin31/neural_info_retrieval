@@ -267,7 +267,7 @@ In summary, the distribution of datafiles contains a dev, train, and complete sp
 ## Current Results
 
 Model Description | RID | tf=avg | tf=pd_avg | Improvement
-------------------|------------------|-------------|------------
+-----|------|------|-------|------------
 Baseline HDCT MSMARCO Doc | - | 0.20889 | nr | 0.0
 t5 body only | 2 | 0.267145665 | nr | 0.05825
 tanh passage normalization | 3| 0.24821 | nr | 0.039321
