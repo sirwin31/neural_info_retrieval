@@ -4,9 +4,20 @@ The DeepCT repository contains a
 documents.
 
 ## Input Files
-1. The first input document is a predictions file, containing passage-level
+1. The first input document is a predictions file or set of prediction files
+that contain passage-level
 term weights. See the README.md file in the [deepCT subfolder](deepCT) for
-more detail on prediction files.
+more detail on prediction files. If there is more than one predictions file,
+use the `cat` command to join them into a single file. For example:
+    ```bash
+    cat \
+    predictions_000.tsv \
+    predictions_001.tsv \
+    ...
+    predictions_031.tsv \
+    predictions_032.tsv \
+    > predictions.tsv
+    ```
 2. The second input document is a JSONL document, where each line is a
 dictionary with keys 'id', 'url', and 'title'. The value of the 'id' key
 is the document ID and passage number, connected with an underscore. For
