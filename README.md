@@ -266,16 +266,16 @@ In summary, the distribution of datafiles contains a dev, train, and complete sp
 
 ## Current Results
 
-Model Description | Model Run Number | MRR@100:DEV | Improvement
-------------------|------------------|-------------|------------
-Baseline HDCT MSMARCO Doc | - | 0.20889 | 0.0
-t5 body only | 2 | 0.267145665 | 0.05825
-tanh passage normalization | 3| 0.24821 | 0.039321
-gaussian passage normalization | 4 | 0.01578 | -0.19311
-t5 body and HDCT body | 5 | 0.26604 | 0.057153
-Averaging Method | 6 | 0.25065 | 0.04176
-Max Method | 7 | 0.26151 | 0.05262
-T5 body with tanh | 8 | 0.27155 | 0.06266
-T5 body with tanh (optimized) | 8+ | 0.292507 | 0.083617
+Model Description | RID | tf=avg | tf=pd_avg | Improvement
+-----|------|------|-------|------------
+Baseline HDCT MSMARCO Doc | - | 0.20889 | 0.22113 | 0.0
+t5 body only | 2 | 0.267145665 | nr | 0.05825
+tanh passage normalization | 3| 0.24821 | nr | 0.039321
+gaussian passage normalization | 4 | 0.01578 | nr|  -0.19311
+t5 body and HDCT body | 5 | 0.26604 | 0.26212| 0.057153
+Averaging Method | 6 | 0.25065 | nr| 0.04176
+Max Method | 7 | 0.26151 | nr| 0.05262
+T5 body with tanh | 8 | 0.27155 | 0.278272|  0.06266
+T5 body with tanh (optimized k1=10.3, b=0.7) | 8+ | 0.292507| 0.29745 | 0.083617
 
 
