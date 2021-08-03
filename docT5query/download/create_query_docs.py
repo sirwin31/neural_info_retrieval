@@ -35,7 +35,9 @@ import sys
 
 from tqdm import tqdm
 
-sys.path.insert(0, os.path.abspath('..'))
+dirname = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.abspath(os.path.join(dirname, '../..'))
+sys.path.insert(repo_root)
 import util.indexer
 
 desc = ("Converts docT5query dataset into a single TSV document file "

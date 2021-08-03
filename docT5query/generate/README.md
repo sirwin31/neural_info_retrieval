@@ -1,6 +1,11 @@
 # docT5query/generate Folder
 This folder contains the files necessary for generating queries with the docT5query model, which was created by [Nogueira and Lin](https://cs.uwaterloo.ca/~jimmylin/publications/Nogueira_Lin_2019_docTTTTTquery-v2.pdf). The model's Github repo is at https://github.com/castorini/docTTTTTquery. This implementation of docT5query uses the Huggingface Pytorch implementation. The name of the base T5 model is `t5-base` and the version that was trained by Noqueira and Lin is named `castorini/doc2query-t5-base-msmarco`.
 
+Generating queries from the docT5query model is time-consuming. A speedier
+alternative is to use queries that were already generated from the MSMARCO
+document dataset and posted onlne by Lin and Nogueira. See the
+[docT5query/download](../download) subfolder for additional guidance.
+
 ## Folder Contents
 * `genq.py`: contains the Pytorch prediction loop. It requires installation of Pytorch, the Huggingface transformers module, and nltk. 
 * `doc_dataset.py`: A subclass of `torch.utils.data.IterableDataset` that feeds documents to the Pytorch prediction loop.
@@ -64,9 +69,3 @@ genq.generate_queries(args)
 * The `doc_dataset.py` module uses the nltk package for splitting input documents into passages. The module attempts to split passages at sentence boundaries, to preserve context within a passage. It will add sentences to the current passage until the passage length is greater than the target passage length. Most passages will be slightly longer than the target passage length. Sentences will be split only if necessary to comply with the maximum passage length.
 * `genq.py` requires the `util.indexer` and `util.log` modules.
 * `genq.py` generates a logfile called `log_{datetimestamp}_train.txt`.
-
-
-
-
-
-

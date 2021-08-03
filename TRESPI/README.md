@@ -1,8 +1,7 @@
-# Combining Indexes
+# Combining Indexes with TRESPI
 
-The module `combine_indexes.joiner` contains a class called
-`IndexJoiner` that can combine two different indexes using various
-techniques.
+The module `TRESPI.joiner` contains a class called `IndexJoiner` that can
+combine two different indexes using various techniques.
 
 ## Example Code for Joining Indexes
 ```python
