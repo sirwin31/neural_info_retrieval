@@ -54,12 +54,12 @@ For people who are interested in our research project and want to continue the w
 The code for our project, along with detailed explanations, is included in out [github repository.](https://github.com/sirwin31/neural_info_retrieval)
 
 ## References
-1. Z. Dai, J. Callan. 2019. Context Aware Sentence/Passage Term Importance Estimation for First Stage Retrieval.  https://arxiv.org/abs/1910.10687
-2. Z. Dai, J. Callan. 2020. Context aware document term weighting for ad-hoc search.  In Proc. of The Web Conference 2020, 2020, pp. 1897-1907. https://dl.acm.org/doi/10.1145/3366423.3380258
-3. J. Devlin, M. Chang, K. Lee, K. Toutanova. 2019. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Vol. 1.  https://aclanthology.org/N19-1423.pdf
-4. J. Lin, R. Nogueira, A. Yates. 2020. Pretrained Transformers for Text Ranking: BERT and Beyond. https://arxiv.org/pdf/2010.06467
-5. R. Nogueira, W. Yang, J. Lin, K. Cho. 2019. Document Expansion by Query Prediction. https://arxiv.org/abs/1904.08375
-6. R. Nogueira, J. Lin. 2019. From doc2query to docTTTTTquery. https://cs.uwaterloo.ca/~jimmylin/publications/Nogueira_Lin_2019_docTTTTTquery.pdf
-7. S. Robertson, H. Zaragoza. 2009. The Probabilistic Relevance Framework: BM25 and Beyond. Foundations and Trends in Information Retrieval. Vol. 3, No. 4 (2009) pp. 333-389. https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.437.660&rep=rep1&type=pdf
+1. Z. Dai, J. Callan. 2019. Context Aware Sentence/Passage Term Importance Estimation for First Stage Retrieval.  [https://arxiv.org/abs/1910.10687](https://arxiv.org/abs/1910.10687)
+2. Z. Dai, J. Callan. 2020. Context aware document term weighting for ad-hoc search.  In Proc. of The Web Conference 2020, 2020, pp. 1897-1907. [https://dl.acm.org/doi/10.1145/3366423.3380258](https://dl.acm.org/doi/10.1145/3366423.3380258)
+3. J. Devlin, M. Chang, K. Lee, K. Toutanova. 2019. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Vol. 1.  [https://aclanthology.org/N19-1423.pdf](https://aclanthology.org/N19-1423.pdf)
+4. J. Lin, R. Nogueira, A. Yates. 2020. Pretrained Transformers for Text Ranking: BERT and Beyond. [https://arxiv.org/pdf/2010.06467](https://arxiv.org/pdf/2010.06467)
+5. R. Nogueira, W. Yang, J. Lin, K. Cho. 2019. Document Expansion by Query Prediction. [https://arxiv.org/abs/1904.08375](https://arxiv.org/abs/1904.08375)
+6. R. Nogueira, J. Lin. 2019. From doc2query to docTTTTTquery. [https://cs.uwaterloo.ca/~jimmylin/publications/Nogueira_Lin_2019_docTTTTTquery.pdf](https://cs.uwaterloo.ca/~jimmylin/publications/Nogueira_Lin_2019_docTTTTTquery.pdf)
+7. S. Robertson, H. Zaragoza. 2009. The Probabilistic Relevance Framework: BM25 and Beyond. Foundations and Trends in Information Retrieval. Vol. 3, No. 4 (2009) pp. 333-389. [https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.437.660&rep=rep1&type=pdf](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.437.660&rep=rep1&type=pdf)
 
 
