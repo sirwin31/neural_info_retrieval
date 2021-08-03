@@ -25,8 +25,30 @@ Here is a summery of our approach with TRESPI
 
 
 ## How well did we do
+### Data set
+For our research we used Microsoft’s Machine Reading Comprehension Dataset ([MS MARCO](https://microsoft.github.io/msmarco/)), which is commonly called MS MARCO. It is designed for research into NLP and information retrieval.  MSMARCO was generated from Bing queries and enriched with human verified “best results”. In the bottom table you can see an example of the dataset format.  It includes a query and the most relevant document.
 
+| Query                                                                 | Relevant Document ID | Relevant Document Title |
+| ---------------------------------------------------------------------- | --------------------| -------------------------------- |
+| What are the two essential constituent elements of plain carbon steel?| D1862900      | Difference Between Alloy Steel and Carbon Steel |
 
+### Demo
+Here is our [Demo Notebook](https://github.com/sirwin31/neural_info_retrieval/blob/main/demo_notebooks/trespi_demo/query_demo.ipynb). You can see the two query results from TRESPI
 
+### Module Evaluation 
+Our Module evaluation is based on Mean Reciprocol Rank (MRR) criteria. 
+All results are baselined against DeepCT with default recommended hyperparameters. Utilizing a T5 generated document body we were able to outperform baseline by 0.058. By improving upon the passage normalization function – we gained another 4 one-hundredths.And with hyperparamter tuning, we exceed baseline by 0.084.
+![results](https://user-images.githubusercontent.com/46507702/127948393-c3d60e33-c40d-4de8-b325-e902a15d819d.png)
+![surface](https://user-images.githubusercontent.com/46507702/127948444-14873ae7-672f-4728-a46e-b8ec8740dcab.png)
+
+## Carry on the work
+For people who are interested in our research project and want to continue the work, we have some recommendations for you. 
+
+   * Different evaluation metric; Take into account more than just predicted rank of most relevant document
+      * MRR vs  Precision vs nDCG vs Spearman’s Rank Correlation Coefficient
+   * Explore larger data sets: ClueWeb. Look at other datasets with passage level context.  We observed incremental gains based on how to handle passage level term weights. 
+   * Train DocT5Query specifically for task of vocabulary expansion
+      * Refined query generation to eliminate useless terms and increase synonym capture. Zero in on the vocabulary expansion problem to relentlessly promote terms relevant to the topic – there is still too much emphasis on term frequency in this model
+   * Neural network based term weight combination
 
 
