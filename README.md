@@ -204,6 +204,10 @@ python3 tools/scripts/msmarco/msmarco_doc_eval.py \
  --run $RUN_HOME/runs/run.msmarco-doc.leaderboard-dev.bm25base.txt 
 ```
 
+## Demo Notebooks
+The [demo_notebooks](demo_notebooks) subfolder contains Jupyter notebooks with an example BM25 algorithm 
+and examples of using Pyserini for running queries and inspecting the contents of an inverted index.
+
 ## About MSMarco
 MS Marco is a collection of research datasets intended to advance AI and related fields.  The document dataset of interest for this work is the MS Marco Document retreval dataset which was released in August of 2020 by Microsoft.  To compare results and create a competative environment which can advance Bing search efficency, Microsoft created the MSMARCO Document Ranking competition and [leaderboard](https://microsoft.github.io/msmarco/).
 
