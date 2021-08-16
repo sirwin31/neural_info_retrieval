@@ -11,7 +11,7 @@ information retrieval incorporate context AND be supplemented to address
 vocabulary mismatch measured by document return rank?
 
 Our final presentation is available at
-[Irwin_Holmes_Wang_Khural_Final_Presentation_CapstoneW210_Sect1_Summer2021.pdf](/home/ubuntu/efs/stacy/neural_info_retrieval/Irwin_Holmes_Wang_Khural_Final_Presentation_CapstoneW210_Sect1_Summer2021.pdf)
+[Irwin_Holmes_Wang_Khural_Final_Presentation_CapstoneW210_Sect1_Summer2021.pdf](Irwin_Holmes_Wang_Khural_Final_Presentation_CapstoneW210_Sect1_Summer2021.pdf)
 
 Our project is based on research conducted by Zhuyun Dai and Jamie
 Callan at Carnegie Mellon University and Rodrigo Nogueira and Jimmy Lin
